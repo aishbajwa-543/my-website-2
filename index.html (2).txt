@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>MiniBakers | Freshly Baked With Love</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    :root {
+      --primary: #8b4513;
+      --secondary: #f5d6b3;
+      --cream: #fffaf3;
+      --dark: #2d1b12;
+      --gold: #d49a5b;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    /* NAVBAR */
+    header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 250, 243, 0.96);
+      box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: auto;
+      padding: 17px 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .logo span {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .menu-btn {
+      display: none;
+      border: none;
+      background: none;
+      font-size: 27px;
+      cursor: pointer;
+      color: var(--primary);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 8% 70px;
+      background:
+        linear-gradient(90deg,
+        rgba(255,250,243,0.96) 0%,
+        rgba(255,250,243,0.82) 50%,
+        rgba(245,214,179,0.45) 100%);
+    }
+
+    .hero-content {
+      max-width: 650px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #f5dfc9;
+      color: var(--primary);
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 7vw, 75px);
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      color: var(--primary);
+    }
+
+    .hero p {
+      max-width: 570px;
+      font-size: 18px;
+      color: #654d40;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 25px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      border: 2px solid var(--primary);
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5f2e0d;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      color: var(--primary);
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* GENERAL */
+    section {
+      padding: 90px 7%;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title span {
+      color: var(--primary);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 14px;
+    }
+
+    .section-title h2 {
+      font-size: 40px;
+      margin-top: 8px;
+    }
+
+    .section-title p {
+      max-width: 650px;
+      margin: 10px auto;
+      color: #765e50;
+    }
+
+    /* PRODUCTS */
+    .products {
+      background: white;
+    }
+
+    .product-grid {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+    }
+
+    .card {
+      background: var(--cream);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(91, 53, 30, 0.1);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(91, 53, 30, 0.17);
+    }
+
+    .product-img {
+      height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      background: linear-gradient(135deg, #f8e5d1, #efd0b0);
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    .card-content h3 {
+      margin-bottom: 7px;
+    }
+
+    .card-content p {
+      color: #765e50;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .price {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--primary);
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .order-btn {
+      border: none;
+      background: var(--primary);
+      color: white;
+      border-radius: 20px;
+      padding: 8px 14px;
+      cursor: pointer;
+    }
+
+    .order-btn:hover {
+      background: #5f2e0d;
+    }
+
+    /* ABOUT */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      max-width: 1200px;
+      margin: auto;
+      align-items: center;
+    }
+
+    .about-box {
+      background: #f1d3b5;
+      border-radius: 25px;
+      min-height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 130px;
+      position: relative;
+    }
+
+    .about-box::after {
+      content: "Baked Fresh Daily";
+      position: absolute;
+      bottom: 25px;
+      background: white;
+      color: var(--primary);
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .about-text h2 {
+      font-size: 42px;
+      margin-bottom: 20px;
+    }
+
+    .about-text h2 span {
+      color: var(--primary);
+    }
+
+    .about-text p {
+      color: #6d5547;
+      margin-bottom: 15px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .feature {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+
+    /* STATS */
+    .stats {
+      background: var(--primary);
+      color: white;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      text-align: center;
+      gap: 20px;
+    }
+
+    .stat h3 {
+      font-size: 35px;
+    }
+
+    .stat p {
+      opacity: 0.85;
+    }
+
+    /* TESTIMONIALS */
+    .testimonial-grid {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .testimonial {
+      background: white;
+      padding: 28px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(91,53,30,0.08);
+    }
+
+    .stars {
+      color: #e3a640;
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .testimonial p {
+      color: #654d40;
+      font-style: italic;
+      margin-bottom: 18px;
+    }
+
+    .customer {
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    /* CONTACT */
+    .contact {
+      background: #fff;
+    }
+
+    .contact-container {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+    }
+
+    .contact-info h2 {
+      font-size: 38px;
+      margin-bottom: 15px;
+    }
+
+    .contact-info h2 span {
+      color: var(--primary);
+    }
+
+    .contact-info p {
+      color: #765e50;
+      margin-bottom: 25px;
+    }
+
+    .info-item {
+      margin: 15px 0;
+      font-weight: 600;
+    }
+
+    .form {
+      background: var(--cream);
+      padding: 30px;
+      border-radius: 20px;
+    }
+
+    .form input,
+    .form select,
+    .form textarea {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 15px;
+      border: 1px solid #dfc7b1;
+      border-radius: 8px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .form input:focus,
+    .form select:focus,
+    .form textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      border: none;
+      padding: 14px;
+      border-radius: 25px;
+      background: var(--primary);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background: #5f2e0d;
+    }
+
+    #message {
+      margin-top: 15px;
+      text-align: center;
+      color: #228b22;
+      font-weight: bold;
+      display: none;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #2d1b12;
+      color: white;
+      padding: 35px 7%;
+      text-align: center;
+    }
+
+    footer .logo {
+      color: #f5d6b3;
+      margin-bottom: 10px;
+    }
+
+    footer p {
+      color: #cbb7aa;
+      margin-bottom: 15px;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .socials a {
+      color: #f5d6b3;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .about {
+        grid-template-columns: 1fr;
+      }
+
+      .testimonial-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .contact-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: var(--cream);
+        flex-direction: column;
+        padding: 20px;
+        gap: 18px;
+        text-align: center;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .hero {
+        padding: 120px 6% 60px;
+      }
+
+      section {
+        padding: 65px 5%;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+        padding: 55px 5%;
+      }
+
+      .section-title h2 {
+        font-size: 32px;
+      }
+
+      .about-text h2 {
+        font-size: 34px;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+  <header>
+    <nav>
+      <div class="logo">Mini<span>Bakers</span></div>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#products">Menu</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <button class="menu-btn" id="menuBtn">☰</button>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+
+      <div class="badge">🍰 Freshly Baked Every Day</div>
+
+      <h1>
+        Sweet Moments,<br>
+        <span>Freshly Baked.</span>
+      </h1>
+
+      <p>
+        Welcome to MiniBakers — your little bakery for delicious cakes,
+        cupcakes, cookies and freshly baked treats made with love.
+      </p>
+
+      <div class="buttons">
+        <a href="#products" class="btn btn-primary">Explore Menu</a>
+        <a href="#contact" class="btn btn-outline">Order Now</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products" id="products">
+
+    <div class="section-title">
+      <span>Our Menu</span>
+      <h2>Fresh From The Oven</h2>
+      <p>
+        Discover our selection of delicious handmade bakery favorites.
+      </p>
+    </div>
+
+    <div class="product-grid">
+
+      <div class="card">
+        <div class="product-img">🎂</div>
+        <div class="card-content">
+          <h3>Celebration Cake</h3>
+          <p>Soft, creamy and beautifully decorated for your special day.</p>
+
+          <div class="price">
+            <span>From Rs. 1,200</span>
+            <button class="order-btn" onclick="orderProduct('Celebration Cake')">
+              Order
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="product-img">🧁</div>
+        <div class="card-content">
+          <h3>Mini Cupcakes</h3>
+          <p>Delicious bite-sized cupcakes with creamy toppings.</p>
+
+          <div class="price">
+            <span>From Rs. 500</span>
+            <button class="order-btn" onclick="orderProduct('Mini Cupcakes')">
+              Order
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="product-img">🍪</div>
+        <div class="card-content">
+          <h3>Chocolate Cookies</h3>
+          <p>Crunchy outside, soft inside and loaded with chocolate.</p>
+
+          <div class="price">
+            <span>From Rs. 400</span>
+            <button class="order-btn" onclick="orderProduct('Chocolate Cookies')">
+              Order
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="product-img">🍫</div>
+        <div class="card-content">
+          <h3>Fudge Brownies</h3>
+          <p>Rich, chocolatey and irresistibly fudgy homemade brownies.</p>
+
+          <div class="price">
+            <span>From Rs. 600</span>
+            <button class="order-btn" onclick="orderProduct('Fudge Brownies')">
+              Order
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+
+    <div class="about">
+
+      <div class="about-box">
+        🧁
+      </div>
+
+      <div class="about-text">
+
+        <h2>
+          Made With <span>Love & Butter</span>
+        </h2>
+
+        <p>
+          At MiniBakers, we believe every sweet treat should create a happy
+          memory. Our bakery focuses on fresh ingredients, beautiful designs
+          and delicious homemade flavors.
+        </p>
+
+        <p>
+          From birthdays and celebrations to your everyday tea time,
+          we bake something special for every occasion.
+        </p>
+
+        <div class="features">
+          <div class="feature">✓ Fresh Ingredients</div>
+          <div class="feature">✓ Homemade Taste</div>
+          <div class="feature">✓ Custom Designs</div>
+          <div class="feature">✓ Made With Love</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+
+    <div class="stat">
+      <h3>500+</h3>
+      <p>Happy Customers</p>
+    </div>
+
+    <div class="stat">
+      <h3>1,000+</h3>
+      <p>Orders Delivered</p>
+    </div>
+
+    <div class="stat">
+      <h3>20+</h3>
+      <p>Delicious Treats</p>
+    </div>
+
+    <div class="stat">
+      <h3>100%</h3>
+      <p>Fresh & Homemade</p>
+    </div>
+
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews">
+
+    <div class="section-title">
+      <span>Testimonials</span>
+      <h2>What Our Customers Say</h2>
+    </div>
+
+    <div class="testimonial-grid">
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+
+        <p>
+          "The cake was absolutely delicious! It looked beautiful and tasted
+          even better."
+        </p>
+
+        <div class="customer">— Sarah</div>
+      </div>
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+
+        <p>
+          "MiniBakers has become my favorite place for cookies and brownies.
+          Everything tastes fresh!"
+        </p>
+
+        <div class="customer">— Ayesha</div>
+      </div>
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+
+        <p>
+          "Amazing service and beautiful presentation. Everyone loved the
+          birthday cake."
+        </p>
+
+        <div class="customer">— Fatima</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+
+    <div class="section-title">
+      <span>Place Your Order</span>
+      <h2>Let's Bake Something Special</h2>
+    </div>
+
+    <div class="contact-container">
+
+      <div class="contact-info">
+
+        <h2>
+          Order Your <span>Favorite Treat</span>
+        </h2>
+
+        <p>
+          Tell us what you'd like to order and we'll get back to you with
+          confirmation and delivery details.
+        </p>
+
+        <div class="info-item">
+          📍 Your City, Pakistan
+        </div>
+
+        <div class="info-item">
+          📞 +92 300 1234567
+        </div>
+
+        <div class="info-item">
+          ✉️ hello@minibakers.com
+        </div>
+
+        <div class="info-item">
+          🕐 Mon - Sat: 10:00 AM - 8:00 PM
+        </div>
+
+      </div>
+
+      <form class="form" id="orderForm">
+
+        <input
+          type="text"
+          id="name"
+          placeholder="Your Name"
+          required
+        >
+
+        <input
+          type="tel"
+          id="phone"
+          placeholder="Phone Number"
+          required
+        >
+
+        <select id="product" required>
+          <option value="">Select Product</option>
+          <option>Celebration Cake</option>
+          <option>Mini Cupcakes</option>
+          <option>Chocolate Cookies</option>
+          <option>Fudge Brownies</option>
+        </select>
+
+        <input
+          type="number"
+          id="quantity"
+          min="1"
+          placeholder="Quantity"
+          required
+        >
+
+        <textarea
+          id="details"
+          placeholder="Order details / special instructions"
+        ></textarea>
+
+        <button type="submit" class="submit-btn">
+          Submit Order
+        </button>
+
+        <div id="message">
+          ✓ Thank you! Your order request has been received.
+        </div>
+
+      </form>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+
+    <div class="logo">Mini<span>Bakers</span></div>
+
+    <p>
+      Freshly baked happiness, one bite at a time. 🍰
+    </p>
+
+    <div class="socials">
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+      <a href="#">WhatsApp</a>
+    </div>
+
+    <br>
+
+    <p>
+      © 2026 MiniBakers. All Rights Reserved.
+    </p>
+
+  </footer>
+
+  <script>
+    // MOBILE MENU
+    const menuBtn = document.getElementById("menuBtn");
+    const navLinks = document.getElementById("navLinks");
+
+    menuBtn.addEventListener("click", function () {
+      navLinks.classList.toggle("active");
+    });
+
+    // CLOSE MOBILE MENU WHEN LINK IS CLICKED
+    document.querySelectorAll(".nav-links a").forEach(function(link) {
+      link.addEventListener("click", function() {
+        navLinks.classList.remove("active");
+      });
+    });
+
+    // ORDER BUTTON
+    function orderProduct(productName) {
+      document.getElementById("product").value = productName;
+
+      document.getElementById("contact").scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+
+    // ORDER FORM
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
+
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const product = document.getElementById("product").value;
+      const quantity = document.getElementById("quantity").value;
+
+      if (name && phone && product && quantity) {
+
+        document.getElementById("message").style.display = "block";
+
+        // Clear form after submission
+        this.reset();
+
+        setTimeout(function() {
+          document.getElementById("message").style.display = "none";
+        }, 5000);
+      }
+    });
+  </script>
+
+</body>
+</html>
